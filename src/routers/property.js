@@ -1,24 +1,24 @@
 const express = require('express');
-const Task = require('../models/tasks');
+const Property = require('../models/properties');
 const auth = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 
 const router = new express.Router();
 
-router.post('/tasks', auth, async (req, res) => {
-  const task = new Task({
+router.post('/properties', auth, async (req, res) => {
+  const property = new Property({
     ...req.body,
-    owner: req.user._id,
+    landlord: req.landlord._id,
   });
   try {
-    await task.save();
-    res.status(201).send(task);
+    await property.save();
+    res.status(201).send(property);
   } catch (e) {
     res.status(400).send(e);
   }
 });
 
-router.get('/tasks', async (req, res) => {
+router.get('/properties', auth, async (req, res) => {
   const match = {};
   const sort = {};
 
@@ -32,9 +32,9 @@ router.get('/tasks', async (req, res) => {
   }
 
   try {
-    await req.user
+    await req.landlord
       .populate({
-        path: 'tasks',
+        path: 'properties',
         match,
         options: {
           limit: parseInt(req.query.limit),
@@ -43,26 +43,26 @@ router.get('/tasks', async (req, res) => {
         },
       })
       .execPopulate();
-    res.send(req.user.tasks);
+    res.send(req.landlord.properties);
   } catch (e) {
     res.status(500).send(e);
   }
 });
 
-router.get('/tasks/:id', auth, async (req, res) => {
+router.get('/properties/:id', auth, async (req, res) => {
   const _id = req.params.id;
   try {
-    const task = await Task.findOne({ _id, owner: req.user._id });
-    if (!task) {
+    const property = await Property.findOne({ _id, landlord: req.landlord._id });
+    if (!property) {
       return res.status(404).send();
     }
-    res.send(task);
+    res.send(property);
   } catch (e) {
     res.status(500).send(e);
   }
 });
 
-router.patch('/tasks/:id', auth, async (req, res) => {
+router.patch('/properties/:id', auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['completed', 'description'];
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -70,33 +70,33 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     return res.status(400).send({ error: 'Invalid Request' });
   }
   try {
-    const task = await Task.findOne({
+    const property = await Property.findOne({
       _id: req.params.id,
-      owner: req.user._id,
+      owner: req.landlord._id,
     });
 
-    if (!task) {
+    if (!property) {
       return res.status(404).send();
     }
-    updates.forEach((update) => (task[update] = req.body[update]));
-    await task.save();
+    updates.forEach((update) => (property[update] = req.body[update]));
+    await property.save();
 
-    res.send(task);
+    res.send(property);
   } catch (e) {
     res.status(400).send();
   }
 });
 
-router.delete('/tasks/:id', auth, async (req, res) => {
+router.delete('/properties/:id', auth, async (req, res) => {
   try {
-    const task = await Task.findOneAndDelete({
+    const property = await Property.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user._id,
+      owner: req.landlord._id,
     });
-    if (!task) {
+    if (!property) {
       res.status(404).send({ error: 'Not here!' });
     }
-    res.send(task);
+    res.send(property);
   } catch (e) {
     res.status(500).send();
   }

@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Task = require('./tasks');
-const userSchema = new mongoose.Schema(
+const Task = require('./properties');
+const landlordSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -53,22 +53,19 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    avatar: {
-      type: Buffer,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-userSchema.virtual('tasks', {
-  ref: 'Task',
+landlordSchema.virtual('landlord', {
+  ref: 'Property',
   localField: '_id',
-  foreignField: 'owner',
+  foreignField: 'landlord',
 });
 
-userSchema.methods.toJSON = function () {
+landlordSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
   delete userObject.password;
@@ -77,7 +74,7 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-userSchema.methods.generateAuthToken = async function () {
+landlordSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, 'thisisit');
   user.tokens = user.tokens.concat({ token });
@@ -85,7 +82,7 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-userSchema.statics.findByCredentials = async (email, password) => {
+landlordSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error('Unable to login');
@@ -100,7 +97,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 };
 
 // Hash the plain text password before saving
-userSchema.pre('save', async function (next) {
+landlordSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
@@ -108,11 +105,11 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.pre('remove', async function (next) {
+landlordSchema.pre('remove', async function (next) {
   const user = this;
   await Task.deleteMany({ owner: user._id });
   next();
 });
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', landlordSchema);
 
 module.exports = User;
