@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const taskSchema = new mongoose.Schema(
+const propertySchema = new mongoose.Schema(
   {
-    description: {
+    name: {
       type: String,
       required: true,
       trim: true,
     },
-    completed: {
+    address: {
       type: Boolean,
       default: false,
     },
-    owner: {
+    landlord: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: 'Landlord',
     },
   },
   { timestamps: true }
 );
 
-const Task = mongoose.model('Task', taskSchema);
+const Property = mongoose.model('Property', propertySchema);
 
-module.exports = Task;
+module.exports = Property;
