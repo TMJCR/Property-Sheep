@@ -15,6 +15,11 @@ const upload = multer({
     cb(undefined, true);
   },
 });
+router.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3001'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 router.post('/landlords', async (req, res) => {
   const landlord = new Landlord(req.body);
