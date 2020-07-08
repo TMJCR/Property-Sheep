@@ -21,7 +21,10 @@ router.use(function (req, res, next) {
   next();
 });
 
+router.use(express.urlencoded({ extended: false }));
+
 router.post('/landlords', async (req, res) => {
+  console.log(req.body);
   const landlord = new Landlord(req.body);
   try {
     await landlord.save();
