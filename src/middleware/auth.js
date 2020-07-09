@@ -3,7 +3,7 @@ const Landlord = require('../models/landlord');
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.header('Authorization').replace('Bearer ', '');
+    const token = req.cookies['auth_token'];
     const decoded = jwt.verify(token, 'thisisit');
     const landlord = await Landlord.findOne({
       _id: decoded._id,

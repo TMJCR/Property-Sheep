@@ -15,13 +15,6 @@ const upload = multer({
     cb(undefined, true);
   },
 });
-router.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3001'); // update to match the domain you will make the request from
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
-router.use(express.urlencoded({ extended: false }));
 
 router.post('/landlords', async (req, res) => {
   console.log(req.body);
@@ -29,6 +22,7 @@ router.post('/landlords', async (req, res) => {
   try {
     await landlord.save();
     const token = await landlord.generateAuthToken();
+    res.cookie('auth_token', token);
     res.status(201).send({ landlord, token });
   } catch (e) {
     res.status(400).send(e);
@@ -39,6 +33,8 @@ router.post('/landlords/login', async (req, res) => {
   try {
     const landlord = await Landlord.findByCredentials(req.body.email, req.body.password);
     const token = await landlord.generateAuthToken();
+    res.cookie('auth_token', token);
+    res.redirect('http://localhost:3000/landlords/me');
     res.send({ landlord, token });
   } catch (e) {
     res.status(400).send();

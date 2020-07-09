@@ -59,7 +59,7 @@ const landlordSchema = new mongoose.Schema(
   }
 );
 
-landlordSchema.virtual('landlord', {
+landlordSchema.virtual('properties', {
   ref: 'Property',
   localField: '_id',
   foreignField: 'landlord',
@@ -76,7 +76,7 @@ landlordSchema.methods.toJSON = function () {
 
 landlordSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, 'thisisit');
+  const token = jwt.sign({ _id: user._id.toString() }, 'thisisit', { expiresIn: '1 minute' });
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
