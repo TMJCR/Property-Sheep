@@ -18,12 +18,14 @@ const upload = multer({
 
 router.post('/landlords', async (req, res) => {
   console.log(req.body);
+  // split both requests into a landlord, properties and contractors
   const landlord = new Landlord(req.body);
+
   try {
     await landlord.save();
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
-    res.status(201).send({ landlord, token });
+    res.status(201).redirect('http://localhost:3001/');
   } catch (e) {
     res.status(400).send(e);
   }
@@ -35,7 +37,7 @@ router.post('/landlords/login', async (req, res) => {
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
     res.redirect('http://localhost:3000/landlords/me');
-    res.send({ landlord, token });
+    // res.send({ landlord, token });
   } catch (e) {
     res.status(400).send();
   }
