@@ -91,8 +91,9 @@ router.get('/landlords/me', auth, async (req, res) => {
   res.send(req.landlord);
 });
 
-router.patch('/landlords/me', auth, async (req, res) => {
+router.put('/landlords/me', auth, async (req, res) => {
   const updates = Object.keys(req.body);
+  console.log(req.body);
   const allowedUpdates = ['name', 'email', 'password', 'age'];
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
@@ -102,6 +103,7 @@ router.patch('/landlords/me', auth, async (req, res) => {
 
   try {
     updates.forEach((update) => (req.landlord[update] = req.body[update]));
+
     await req.landlord.save();
     res.send(req.landlord);
   } catch (e) {
