@@ -16,7 +16,7 @@ const upload = multer({
   },
 });
 
-router.post('/landlords', async (req, res) => {
+router.post('/landlords/create', async (req, res) => {
   console.log(req.body);
   // split both requests into a landlord, properties and contractors
   const landlord = new Landlord(req.body);
@@ -26,6 +26,55 @@ router.post('/landlords', async (req, res) => {
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
     res.status(201).redirect('http://localhost:3001/');
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.patch('/landlords/me', auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  console.log(req.body);
+  const allowedUpdates = [
+    'firstName',
+    'lastName',
+    'title',
+    'mobile',
+    'email',
+    'houseNumber',
+    'address',
+    'marketingPreference',
+    'additionalServices',
+    'ownershipStructures',
+    'tenantType',
+    'useEmergencyContact',
+    'emergencyContact',
+    'addContractors',
+    'bankName',
+    'bankAccountName',
+    'bankAccountNumber',
+    'bankSortCode',
+    'multipleProperties',
+    'paymentProcessed',
+    'paymentDate',
+    'ukResident',
+    'nationalInsurance',
+    'taxReference',
+    'taxOffice',
+    'taxOfficePostcode',
+    'properties',
+    'contractors',
+  ];
+  const isValidOperation = updates.some((update) => allowedUpdates.includes(update));
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: 'Invalid updates!' });
+  }
+
+  try {
+    updates.forEach((update) => (req.landlord[update] = req.body[update]));
+
+    await req.landlord.save();
+    res.send(req.landlord);
   } catch (e) {
     res.status(400).send(e);
   }
