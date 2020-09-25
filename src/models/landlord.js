@@ -5,14 +5,30 @@ const jwt = require('jsonwebtoken');
 const Task = require('./properties');
 const landlordSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
       default: 'User',
       trim: true,
     },
+    lastName: {
+      type: String,
+      default: 'User',
+      trim: true,
+    },
+    title: {
+      type: String,
+    },
+    mobile: {
+      type: Number,
+      trim: true,
+    },
+    houseNumber: {
+      type: Number,
+      trim: true,
+    },
+    address: [],
     password: {
       type: String,
-      required: true,
       trim: true,
       minlength: [7, 'Please add at least 7 characters'],
       validate(value) {
@@ -26,7 +42,6 @@ const landlordSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
       trim: true,
       lowercase: true,
       unique: true,
@@ -38,8 +53,9 @@ const landlordSchema = new mongoose.Schema(
     },
     marketingPreference: {
       type: String,
-      default: 'User',
     },
+    additionalServices: {},
+
     tokens: [
       {
         token: {
