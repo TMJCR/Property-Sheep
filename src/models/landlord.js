@@ -55,7 +55,22 @@ const landlordSchema = new mongoose.Schema(
       type: String,
     },
     additionalServices: {},
-
+    ownershopStructures: {},
+    useEmergencyContact: { type: Boolean },
+    emergencyContact: {},
+    addContractors: { type: Boolean },
+    bankName: { type: String },
+    bankAccountName: { type: String },
+    bankAccountNumber: { type: Number },
+    bankSortCode: {},
+    multipleProperties: { type: Boolean },
+    paymentProcessed: { type: String },
+    paymentDate: {},
+    ukResident: { type: Boolean },
+    nationalInsurance: {},
+    taxReference: {},
+    taxOffice: {},
+    taxOfficePostcode: {},
     tokens: [
       {
         token: {
