@@ -52,7 +52,8 @@ const landlordSchema = new mongoose.Schema(
       type: String,
     },
     additionalServices: {},
-    ownershopStructures: {},
+    ownershipStructures: {},
+    tenantType: {},
     useEmergencyContact: {},
     emergencyContact: {},
     addContractors: {},
@@ -68,6 +69,7 @@ const landlordSchema = new mongoose.Schema(
     taxReference: {},
     taxOffice: {},
     taxOfficePostcode: {},
+
     tokens: [
       {
         token: {

@@ -32,8 +32,10 @@ router.post('/landlords/create', async (req, res) => {
 });
 
 router.patch('/landlords/me', auth, async (req, res) => {
-  const updates = Object.keys(req.body);
-  console.log(req.body);
+  // destructure off the properties and contractors
+  const { properties, contractors, ...landlords } = req.body;
+  const updates = Object.keys(landlords);
+
   const allowedUpdates = [
     'firstName',
     'lastName',
@@ -61,23 +63,23 @@ router.patch('/landlords/me', auth, async (req, res) => {
     'taxReference',
     'taxOffice',
     'taxOfficePostcode',
-    'properties',
-    'contractors',
   ];
-  const isValidOperation = updates.some((update) => allowedUpdates.includes(update));
 
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   if (!isValidOperation) {
     return res.status(400).send({ error: 'Invalid updates!' });
   }
 
   try {
     updates.forEach((update) => (req.landlord[update] = req.body[update]));
-
     await req.landlord.save();
     res.send(req.landlord);
   } catch (e) {
     res.status(400).send(e);
   }
+
+  console.log(contractors);
+  console.log(properties);
 });
 
 router.post('/landlords/login', async (req, res) => {
@@ -138,26 +140,6 @@ router.delete('/landlords/me/avatar', auth, async (req, res) => {
 
 router.get('/landlords/me', auth, async (req, res) => {
   res.send(req.landlord);
-});
-
-router.patch('/landlords/me', auth, async (req, res) => {
-  const updates = Object.keys(req.body);
-  console.log(req.body);
-  const allowedUpdates = ['name', 'email', 'password', 'age'];
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
-  }
-
-  try {
-    updates.forEach((update) => (req.landlord[update] = req.body[update]));
-
-    await req.landlord.save();
-    res.send(req.landlord);
-  } catch (e) {
-    res.status(400).send();
-  }
 });
 
 router.delete('/landlords/me', auth, async (req, res) => {
