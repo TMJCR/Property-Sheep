@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const Landlord = require('../models/landlord');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+
 const upload = multer({
   limits: {
     fileSize: 1000000,

@@ -5,8 +5,9 @@ const bcrypt = require('bcrypt');
 
 const router = new express.Router();
 
-router.post('/properties', auth, async (req, res) => {
-  console.log(req.landlord);
+router.post('/properties', async (req, res) => {
+  console.log(req.cookies);
+  console.log('properties', req.landlord);
   const property = new Property({
     ...req.body,
     landlord: req.landlord._id,

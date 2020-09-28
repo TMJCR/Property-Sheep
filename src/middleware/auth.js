@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const Landlord = require('../models/landlord');
 
 const auth = async (req, res, next) => {
+  console.log(req.cookies);
   try {
     const token = req.cookies['auth_token'];
     const decoded = jwt.verify(token, 'thisisit');
