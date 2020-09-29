@@ -7,11 +7,7 @@ const propertySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    address: {
-      type: String,
-      required: true,
-      default: false,
-    },
+    address: {},
     landlord: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

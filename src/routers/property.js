@@ -5,19 +5,18 @@ const bcrypt = require('bcrypt');
 
 const router = new express.Router();
 
-router.post('/properties', async (req, res) => {
-  console.log(req.cookies);
-  console.log('properties', req.landlord);
-  const property = new Property({
-    ...req.body,
-    landlord: req.landlord._id,
+router.post('/properties', auth, async (req, res) => {
+  req.body.forEach(async (prop) => {
+    const property = new Property({
+      ...prop,
+      landlord: req.landlord._id,
+    });
+    try {
+      await property.save();
+    } catch (e) {
+      res.status(400).send(e);
+    }
   });
-  try {
-    await property.save();
-    res.status(201).send(property);
-  } catch (e) {
-    res.status(400).send(e);
-  }
 });
 
 router.get('/properties', auth, async (req, res) => {
