@@ -6,7 +6,8 @@ const bcrypt = require('bcrypt');
 const router = new express.Router();
 
 router.post('/properties', auth, async (req, res) => {
-  req.body.forEach(async (prop) => {
+  console.log(req.body);
+  await req.body.forEach(async (prop) => {
     const property = new Property({
       ...prop,
       landlord: req.landlord._id,
@@ -17,6 +18,7 @@ router.post('/properties', auth, async (req, res) => {
       res.status(400).send(e);
     }
   });
+  res.status(201).send({ Success: 'Property Added' });
 });
 
 router.get('/properties', auth, async (req, res) => {
