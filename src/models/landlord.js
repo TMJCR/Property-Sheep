@@ -90,6 +90,12 @@ landlordSchema.virtual('properties', {
   foreignField: 'landlord',
 });
 
+landlordSchema.virtual('contractors', {
+  ref: 'Contractor',
+  localField: '_id',
+  foreignField: 'landlord',
+});
+
 landlordSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();

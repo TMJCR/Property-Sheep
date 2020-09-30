@@ -6,17 +6,20 @@ const bcrypt = require('bcrypt');
 const router = new express.Router();
 
 router.post('/contractors', auth, async (req, res) => {
-  console.log(req.landlord);
-  const contractor = new Contractor({
-    ...req.body,
-    landlord: req.landlord._id,
+  await req.body.forEach(async (contract) => {
+    console.log(contract);
+    const contractor = new Contractor({
+      ...contract,
+      landlord: req.landlord._id,
+    });
+    try {
+      await contractor.save();
+      console.log('done');
+    } catch (e) {
+      res.status(400).send(e);
+    }
   });
-  try {
-    await contractor.save();
-    res.status(201).send(contractor);
-  } catch (e) {
-    res.status(400).send(e);
-  }
+  res.status(201).send({ Success: 'Contractor Added' });
 });
 
 router.get('/contractors', auth, async (req, res) => {
