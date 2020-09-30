@@ -3,6 +3,7 @@ require('./db/mongoose');
 
 const landlordRouter = require('./routers/landlord');
 const propertyRouter = require('./routers/property');
+const contractorRouter = require('./routers/contractor');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(landlordRouter);
 app.use(propertyRouter);
+app.use(contractorRouter);
 
 const port = process.env.PORT || 3000;
 

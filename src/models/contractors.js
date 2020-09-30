@@ -1,17 +1,23 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const propertySchema = new mongoose.Schema(
+const contractorSchema = new mongoose.Schema(
   {
-    propertyName: {
+    companyName: {
       type: String,
       required: true,
       trim: true,
     },
-    address: {
+    companyTrade: {
       type: String,
       required: true,
-      default: false,
     },
+    contractorName: {
+      type: String,
+    },
+    companyPostcode: {},
+    companyPhone: {},
+    associatedProperty: {},
+    companyReference: {},
     landlord: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -21,6 +27,6 @@ const propertySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Property = mongoose.model('Property', propertySchema);
+const Contractor = mongoose.model('Contractor', contractorSchema);
 
-module.exports = Property;
+module.exports = Contractor;
