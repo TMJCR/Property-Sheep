@@ -7,10 +7,7 @@ const contractorSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    companyTrade: {
-      type: String,
-      required: true,
-    },
+    companyTrade: {},
     contractorName: {
       type: String,
     },
