@@ -64,6 +64,7 @@ router.patch('/landlords/me', auth, async (req, res) => {
     'taxReference',
     'taxOffice',
     'taxOfficePostcode',
+    'onboarded',
   ];
 
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -78,9 +79,6 @@ router.patch('/landlords/me', auth, async (req, res) => {
   } catch (e) {
     res.status(400).send(e);
   }
-
-  console.log(contractors);
-  console.log(properties);
 });
 
 router.post('/landlords/login', async (req, res) => {
@@ -88,7 +86,13 @@ router.post('/landlords/login', async (req, res) => {
     const landlord = await Landlord.findByCredentials(req.body.email, req.body.password);
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
-    res.redirect('http://localhost:3000/landlords/me');
+    console.log(landlord);
+    if (landlord.onboarded) {
+      res.redirect('http://localhost:3000/landlords/me');
+    } else {
+      res.redirect('http://localhost:3001');
+    }
+
     // res.send({ landlord, token });
   } catch (e) {
     res.status(400).send();
