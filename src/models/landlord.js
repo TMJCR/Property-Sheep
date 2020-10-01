@@ -23,7 +23,7 @@ const landlordSchema = new mongoose.Schema(
       trim: true,
     },
     houseNumber: {},
-    address: [],
+    address: {},
     password: {
       type: String,
       trim: true,
@@ -69,7 +69,10 @@ const landlordSchema = new mongoose.Schema(
     taxReference: {},
     taxOffice: {},
     taxOfficePostcode: {},
-
+    onboarded: {
+      type: Boolean,
+      default: false,
+    },
     tokens: [
       {
         token: {
