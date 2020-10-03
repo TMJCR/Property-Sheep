@@ -141,7 +141,7 @@ landlordSchema.pre('save', async function (next) {
 
 landlordSchema.pre('remove', async function (next) {
   const user = this;
-  console.log(this);
+
   await Task.deleteMany({ owner: user._id });
   next();
 });
