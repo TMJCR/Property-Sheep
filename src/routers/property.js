@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const router = new express.Router();
 
 router.post('/properties', auth, async (req, res) => {
-  console.log(req.body);
   await req.body.forEach(async (prop) => {
     const property = new Property({
       ...prop,
@@ -24,7 +23,7 @@ router.post('/properties', auth, async (req, res) => {
 router.get('/properties', auth, async (req, res) => {
   const match = {};
   const sort = {};
-
+  console.log(req.query);
   if (req.query.completed) {
     match.completed = req.query.completed === 'true';
   }

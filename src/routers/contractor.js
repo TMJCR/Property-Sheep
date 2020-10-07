@@ -7,14 +7,12 @@ const router = new express.Router();
 
 router.post('/contractors', auth, async (req, res) => {
   await req.body.forEach(async (contract) => {
-    console.log(contract);
     const contractor = new Contractor({
       ...contract,
       landlord: req.landlord._id,
     });
     try {
       await contractor.save();
-      console.log('done');
     } catch (e) {
       res.status(400).send(e);
     }
