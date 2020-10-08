@@ -110,7 +110,7 @@ landlordSchema.methods.toJSON = function () {
 
 landlordSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, 'THIS_IS_NOT_FOR_PRODUCTION', { expiresIn: '30 minutes' });
+
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;

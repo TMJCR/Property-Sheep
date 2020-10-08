@@ -4,7 +4,8 @@ const Landlord = require('../models/landlord');
 const auth = async (req, res, next) => {
   try {
     const token = req.cookies['auth_token'];
-    const decoded = jwt.verify(token, 'THIS_IS_NOT_FOR_PRODUCTION');
+    // REDACTED
+    //REDACTED
     const landlord = await Landlord.findOne({
       _id: decoded._id,
       'tokens.token': token,
