@@ -20,12 +20,11 @@ const upload = multer({
 router.post('/landlords/create', async (req, res) => {
   // split both requests into a landlord, properties and contractors
   const landlord = new Landlord(req.body);
-
   try {
     await landlord.save();
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
-    res.status(201).redirect('http://localhost:5001/');
+    res.status(201).redirect('http://localhost:3001/');
   } catch (e) {
     res.status(400).send(e);
   }
@@ -86,9 +85,9 @@ router.post('/landlords/login', async (req, res) => {
     const token = await landlord.generateAuthToken();
     res.cookie('auth_token', token);
     if (landlord.onboarded) {
-      res.redirect('http://localhost:3000/landlords/me');
+      res.redirect('http://localhost:3001/landlords/me');
     } else {
-      res.redirect('http://localhost:5001');
+      res.redirect('http://localhost:3001');
     }
 
     // res.send({ landlord, token });
