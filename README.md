@@ -1,6 +1,6 @@
 ## Property Sheep is a full stack javascript application built for a property letting agency. The site enables landlords to sign up to the service by filling out a questionaire to input all relavant information so their portfolio of properties can be suitably managed by the letting agent. They can then login to the service to securely access their online portal and make any admendments to their account. 
 
-<img src="./Thumbnail.png">
+<img src="./Thumbnail.jpg">
 
 Front end application for Landlords built using React components.
 - Landlords can use this site to join the letting agency.
