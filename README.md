@@ -1,34 +1,27 @@
-Property Sheep is a full stack javascript application built for a property letting agency. The site enables landlords to sign up to the service by filling out a questionaire to input all relavant information so their portfolio of properties can be suitably managed by the letting agent. They can then login to the service to securely access their online portal and make any admendments to their account. 
+Property Sheep is a full stack javascript application built for a property letting agency. The site enables landlords to sign up to the service by filling out a questionnaire to input all relevant information so their portfolio of properties can be suitably managed by the letting agent. A user can then login to the service to access their online portal and securely manage their account.
 
 <img src="./Thumbnail.png">
 
 -How I built this:
-* This was for a real client so sat with the owner to discuss exactly what he wanted from the application.
-* Built the sign up process using bcrypt for secure password storage
-* Also assigned a JWT which is stored in cookies
-* Began with building the questionaire site which uses conditioinal rendering
-* At each stage the information gets stored in the state so that you can navigate through the steps of the questionaire
-* Once completed, this gets added to the database and appears in the users portal 
-* Authentication and CRUD functionality are handled with JSON web tokens whilst MongoDB is used for storage.
+* This project was built for a newly formed property letting agency so I first spoke to the client in order to get a list of specifications for how the site should operate.
+* The client's preference was to use Material-UI for the site so that the components would be straightforward to amend by a future developer but easily maintain consistency.
+* The first stage was to build a secure login/account process which I built in node.js using bcrypt for secure encryption. I also used Json web tokens to authenticate the user and these tokens are stored in session cookies with each subsequent request passed through an authentication middleware.
+* Then I began building out the questionnaire section where certain sections are conditionally rendered based on the answers to earlier questions. At each stage of the questionnaire the application state is updated so a user can navigate back and forth through the questionnaire without losing their progress.
+* All of the questionnaire data is stored in the database and the users can then access their 'Landlord Portal' from where they have full CRUD functionality over their account. 
 
 -What I learnt:
-* Worked with a client to work out what they want
-* The preference was to use materialise UI for easy maintenance so learnt how to customise materialise UI components such as checkbox to fit the brand.
-* Worked collaboratively with a designer/illustrator to come up with the branding of the company
-* Used JWT and using auth middleware
-* USed Session cookies
-* Used BCrypt
-* Conditional Rendering
-* Google Places API and amend the places lookup 
-* with a debounce function
-* Image storage using base64 ecoding
-* Linking schemas using virtual references
-* statics and methods in models
-
+* Security is an important part of the application as the bulk of information stored in the database is private information. Through research, I gained a good understanding of encryption, private & public key cryptography and hashing and salting. I settled on the NPM package BCrypt to securely store the hashed passwords and for account verification.
+* I learnt how to implement Json Web Tokens (JWT) to sign and verify a user once they are logged into the website. This also involved writing custom authentication middleware in Express to intercept and authenticate any requests by checking these tokens. I used the NPM package cookie-parser to pass the tokens back and forth between the browser and the server.
+* I discovered more advanced concepts in database schemas such as the difference between statics and methods on an object data model and linking schemas using virtual references.
+* I worked with the client directly to understand the requirements and then go about designing and implementing the solution independently. I also worked collaboratively with a designer/illustrator to make the website design coherent with the company branding.
+* The client's preference was to use Material-UI and there were many instances where I had to customise the Material-UI components, e.g. customise the checkbox so that if 'all' is checked then each individual box is also checked and vice-versa.
+* Including an address lookup was part of the specification so I decided to use the Google Places API. To stay within API request limits I researched Throttle and Debouncing functions to reduce the number of requests that are sent when a user types in a postcode. Ultimately, I decided to only send the request to the API once three letters of a postcode have been typed which greatly reduced the API calls. 
+* An important part of the questionnaire was to conditionally render the questions based on previous answers which I managed using state to store answered questions.
+ 
 -What I would do differently if I were to do it again:
-* Redux
-* Save in local storage rather than state
-* Materialise came with quite a lot of extras that could have been stripped out
+* The application itself is relatively large compared to other React projects I have completed and there are many components. This results in passing state as props through the component tree which can be difficult to trace through. I believe this would have been a good opportunity to use 'Context' in react as much of the data in the application needs to be accessed by various components, all at different nested levels.
+* In hindsight, while I did save the questionnaire responses in state so that a user can navigate back and forth between the questionnaire pages, I may have been better saving the responses in local storage so that the progress will not be lost if the page is refreshed for any reason.
+* Although I found Material-UI easy to work with (and using it was part of the brief), had I built this for myself I would probably opt to build custom components as the Material-UI components had a lot of additional structure that I didnt need for my purpose and some components needed quite a bit of customisation to work in the way that I needed.
 
 
 
